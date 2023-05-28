@@ -1,19 +1,36 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-const lightbox = basicLightbox.create(`
-<img src="${largeImageURL}" alt="Full Size Image" />
-`);
+const gallery = document.querySelector('.gallery');
 
+function createGalleryItem(item) {
+  const galleryItem = document.createElement('li');
+  galleryItem.classList.add('gallery__item');
 
-lightbox.element().querySelector('img').src = largeImageURL;
+  const link = document.createElement('a');
+  link.classList.add('gallery__link');
+  link.href = item.original;
 
-lightbox.show();
+  const image = document.createElement('img');
+  image.classList.add('gallery__image');
+  image.src = item.preview;
+  image.alt = item.description;
 
+  link.appendChild(image);
+  galleryItem.appendChild(link);
 
-const closeLightbox = () => lightbox.close();
-document.addEventListener('keydown', event => {
-if (event.key === 'Escape') {
-  closeLightbox();
-};
+  return galleryItem;
+}
+
+galleryItems.forEach(item => {
+  const galleryItem = createGalleryItem(item);
+  gallery.appendChild(galleryItem);
 });
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
+
+
 console.log(galleryItems);

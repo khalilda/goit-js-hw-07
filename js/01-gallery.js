@@ -1,7 +1,7 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-const gallery = document.querySelector('.01-gallery');
+const gallery = document.querySelector('.gallery');
 
 function createGalleryItem(item) {
   const galleryItem = document.createElement('li');
@@ -9,13 +9,13 @@ function createGalleryItem(item) {
 
   const link = document.createElement('a');
   link.classList.add('gallery__link');
-  link.href = '#';
+  link.href = item.original;
 
   const image = document.createElement('img');
   image.classList.add('gallery__image');
-  image.src = item.smallImage;
+  image.src = item.preview;
   image.alt = item.description;
-  image.setAttribute('data-source', item.largeImage);
+  image.setAttribute('data-source', item.original);
 
   link.appendChild(image);
   galleryItem.appendChild(link);
@@ -30,17 +30,17 @@ galleryItems.forEach(item => {
 
 gallery.addEventListener('click', event => {
   event.preventDefault();
-
+  
   const target = event.target;
   if (target.nodeName !== 'IMG') return;
-
-  const largeImageURL = target.dataset.source;
+  
+  const original = target.dataset.source;
 
   const lightbox = basicLightbox.create(`
-    <img src="${largeImageURL}" alt="Full Size Image" />
+    <img src="${original}" alt="Full Size Image" />
   `);
 
-  lightbox.element().querySelector('img').src = largeImageURL;
+  lightbox.element().querySelector('img').src = original;
 
   lightbox.show();
 
@@ -51,5 +51,6 @@ gallery.addEventListener('click', event => {
     }
   });
 });
+
 
 console.log(galleryItems);
